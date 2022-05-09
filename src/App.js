@@ -58,9 +58,11 @@ function App() {
     setNewImgArray(shuffledArray);
   };
 
+  const shuffling = useRef(shuffle);
+
   useEffect(() => {
-    shuffle(); // shuffle at first reload
-  }, []);
+    shuffling.current(); // shuffle at first reload
+  }, [shuffling]);
 
   useEffect(() => {
     if (boardStats.time !== 0 && matchedItems.length < 8) {
@@ -118,7 +120,7 @@ function App() {
             i.id === otherPair.id ? otherPair : i
           ); // updated array maintaining the index
           duplicateImgArray.current = updatedItemList.filter(
-            (i) => i.show == false
+            (i) => i.show === false
           ); // updating the duplicate array
           setNewImgArray(updatedItemList); // updating the main object
           setMatchedItems([...matchedItems, findPair]);
@@ -187,11 +189,11 @@ function App() {
           <p>Moves: {boardStats.moves}</p>
           <p>Elapsed Time: {Math.floor(boardStats.elapsedTime)} Seconds</p>
           {matchedItems.length === 8 && (
-            <p>
-              Excellence Score:{" "}
+            <p style={{color: "green", fontWeight: "bold"}}>
+             Congrats! Your Excellence Score:{" "}
               {Math.ceil(
                 (boardStats?.moves * 100) / Math.floor(boardStats?.elapsedTime)
-              )}
+              )}%
             </p>
           )}
           <button className='reset' onClick={resetHandler}>
